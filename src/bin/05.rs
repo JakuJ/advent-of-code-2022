@@ -3,7 +3,7 @@ use lazy_static::lazy_static;
 use regex::Regex;
 
 lazy_static! {
-    static ref RE: Regex = Regex::new(r"move (\d+) from (\d+) to (\d+)").unwrap();
+    static ref RE: Regex = Regex::new(r"^move (\d+) from (\d+) to (\d+)$").unwrap();
 }
 
 fn parse_crates(input: &[&str]) -> Vec<Vec<char>> {
@@ -63,6 +63,7 @@ pub fn part_two(input: &str) -> Option<String> {
 }
 
 fn main() {
+    let _ = RE.is_match(""); // pre-load regex
     let input = &advent_of_code::read_file("inputs", 5);
     advent_of_code::solve!(1, part_one, input);
     advent_of_code::solve!(2, part_two, input);

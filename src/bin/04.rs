@@ -1,17 +1,11 @@
 #![feature(iter_collect_into)]
 
+use advent_of_code::helpers::parse_with_regex;
 use lazy_static::lazy_static;
 use regex::Regex;
 
 lazy_static! {
-    static ref RE: Regex = Regex::new(r"(\d+)-(\d+),(\d+)-(\d+)").unwrap();
-}
-
-fn parse_ranges(line: &str) -> [u32; 4] {
-    let caps = RE.captures(line).unwrap();
-
-    [caps.get(1), caps.get(2), caps.get(3), caps.get(4)]
-        .map(|x| x.unwrap().as_str().parse().unwrap())
+    static ref RE: Regex = Regex::new(r"^(\d+)-(\d+),(\d+)-(\d+)$").unwrap();
 }
 
 pub fn part_one(input: &str) -> Option<u32> {
@@ -19,7 +13,7 @@ pub fn part_one(input: &str) -> Option<u32> {
         input
             .lines()
             .filter(|line| {
-                let [a, b, c, d] = parse_ranges(line);
+                let [a, b, c, d] = parse_with_regex::<u32, 4>(&RE, line);
                 c >= a && d <= b || a >= c && b <= d
             })
             .count() as u32,
@@ -31,7 +25,7 @@ pub fn part_two(input: &str) -> Option<u32> {
         input
             .lines()
             .filter(|line| {
-                let [a, b, c, d] = parse_ranges(line);
+                let [a, b, c, d] = parse_with_regex::<u32, 4>(&RE, line);
                 c >= a && d <= b || a >= c && b <= d || c <= a && a <= d || c <= b && d >= b
             })
             .count() as u32,
@@ -39,6 +33,7 @@ pub fn part_two(input: &str) -> Option<u32> {
 }
 
 fn main() {
+    let _ = RE.is_match(""); // pre-load regex
     let input = &advent_of_code::read_file("inputs", 4);
     advent_of_code::solve!(1, part_one, input);
     advent_of_code::solve!(2, part_two, input);
