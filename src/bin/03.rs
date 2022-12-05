@@ -1,58 +1,45 @@
 #![feature(iter_array_chunks)]
 
-fn priority(item: char) -> usize {
-    let x = item as usize;
+fn priority(x: u8) -> u8 {
     if x <= 90 {
-        27 + x - 65
+        x - 38
     } else {
         x - 96
     }
 }
 
-type Set = [bool; 53];
+type Set = u64;
 
 fn set_of(rucksack: &str) -> Set {
-    let mut set = [false; 53];
-    for c in rucksack.chars() {
-        set[priority(c)] = true;
+    let mut set = 0;
+    for c in rucksack.bytes() {
+        set |= 1 << priority(c);
     }
     set
 }
 
-fn set_intersects<const N: usize>(s: [&Set; N]) -> usize {
-    for i in 1..=52 {
-        if s.iter().all(|x| x[i]) {
-            return i;
-        }
-    }
-    unreachable!()
+fn set_intersects(s: &[Set]) -> u32 {
+    s.iter().fold(Set::MAX, |acc, &e| acc & e).trailing_zeros()
 }
 
 pub fn part_one(input: &str) -> Option<u32> {
-    let mut sum = 0;
-
-    for line in input.lines() {
-        let (r1, r2) = line.split_at(line.len() / 2);
-        debug_assert_eq!(r1.len(), r2.len());
-        let s1 = set_of(r1);
-        let s2 = set_of(r2);
-        sum += set_intersects([&s1, &s2]);
-    }
-
-    Some(sum as u32)
+    Some(
+        input
+            .lines()
+            .map(|line| line.split_at(line.len() / 2))
+            .map(|g| set_intersects(&[set_of(g.0), set_of(g.1)]))
+            .sum(),
+    )
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
-    let mut sum = 0;
-
-    for [g1, g2, g3] in input.lines().array_chunks::<3>() {
-        let s1 = set_of(g1);
-        let s2 = set_of(g2);
-        let s3 = set_of(g3);
-        sum += set_intersects([&s1, &s2, &s3]);
-    }
-
-    Some(sum as u32)
+    Some(
+        input
+            .lines()
+            .array_chunks::<3>()
+            .map(|g| set_intersects(&g.map(set_of)))
+            .sum(),
+    )
 }
 
 fn main() {
@@ -67,10 +54,10 @@ mod tests {
 
     #[test]
     fn test_priority() {
-        assert_eq!(priority('a'), 1);
-        assert_eq!(priority('z'), 26);
-        assert_eq!(priority('A'), 27);
-        assert_eq!(priority('Z'), 52);
+        assert_eq!(priority(b'a'), 1);
+        assert_eq!(priority(b'z'), 26);
+        assert_eq!(priority(b'A'), 27);
+        assert_eq!(priority(b'Z'), 52);
     }
 
     #[test]
