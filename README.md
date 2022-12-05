@@ -10,6 +10,7 @@ Solutions for [Advent of Code](https://adventofcode.com/) in [Rust](https://www.
 | [Day 2](https://adventofcode.com/2021/day/2) | ⭐ | ⭐ |
 | [Day 3](https://adventofcode.com/2021/day/3) | ⭐ | ⭐ |
 | [Day 4](https://adventofcode.com/2021/day/4) | ⭐ | ⭐ |
+| [Day 5](https://adventofcode.com/2021/day/5) | ⭐ | ⭐ |
 
 ---
 
