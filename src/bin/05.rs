@@ -84,4 +84,11 @@ mod tests {
         let input = advent_of_code::read_file("examples", 5);
         assert_eq!(part_two(&input), Some("MCD".to_string()));
     }
+
+    #[test]
+    fn test_solution() {
+        let input = advent_of_code::read_file("inputs", 5);
+        assert_eq!(part_one(&input), Some("CNSZFDVLJ".to_string()));
+        assert_eq!(part_two(&input), Some("QNDWLMGNS".to_string()));
+    }
 }

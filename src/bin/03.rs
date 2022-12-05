@@ -11,11 +11,7 @@ fn priority(x: u8) -> u8 {
 type Set = u64;
 
 fn set_of(rucksack: &str) -> Set {
-    let mut set = 0;
-    for c in rucksack.bytes() {
-        set |= 1 << priority(c);
-    }
-    set
+    rucksack.bytes().fold(0, |acc, e| acc | (1 << priority(e)))
 }
 
 fn set_intersects(s: &[Set]) -> u32 {
@@ -70,5 +66,12 @@ mod tests {
     fn test_part_two() {
         let input = advent_of_code::read_file("examples", 3);
         assert_eq!(part_two(&input), Some(70));
+    }
+
+    #[test]
+    fn test_solution() {
+        let input = advent_of_code::read_file("inputs", 3);
+        assert_eq!(part_one(&input), Some(7908));
+        assert_eq!(part_two(&input), Some(2838));
     }
 }

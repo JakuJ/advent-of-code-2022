@@ -82,4 +82,11 @@ mod tests {
         let input = advent_of_code::read_file("examples", 2);
         assert_eq!(part_two(&input), Some(12));
     }
+
+    #[test]
+    fn test_solution() {
+        let input = advent_of_code::read_file("inputs", 2);
+        assert_eq!(part_one(&input), Some(11841));
+        assert_eq!(part_two(&input), Some(13022));
+    }
 }
