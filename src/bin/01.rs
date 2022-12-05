@@ -5,7 +5,7 @@ pub fn part_one(input: &str) -> Option<u32> {
     let mut current: u32 = 0;
 
     for line in input.lines() {
-        if let Ok(ration) = u32::from_str_radix(&line, 10) {
+        if let Ok(ration) = line.parse::<u32>() {
             current += ration;
         } else {
             if current > max {
@@ -22,7 +22,7 @@ pub fn part_two(input: &str) -> Option<u32> {
     let mut current: u32 = 0;
 
     for line in input.lines() {
-        if let Ok(ration) = u32::from_str_radix(&line, 10) {
+        if let Ok(ration) = line.parse::<u32>() {
             current += ration;
         } else {
             heap.push(current);

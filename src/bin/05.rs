@@ -1,4 +1,4 @@
-use advent_of_code::helpers::{parse_with_regex, vec_mut_ref};
+use advent_of_code::helpers::{disjoint_mut_refs, parse_with_regex};
 use lazy_static::lazy_static;
 use regex::Regex;
 
@@ -6,7 +6,7 @@ lazy_static! {
     static ref RE: Regex = Regex::new(r"move (\d+) from (\d+) to (\d+)").unwrap();
 }
 
-fn parse_crates<'a>(input: &Vec<&str>) -> Vec<Vec<char>> {
+fn parse_crates(input: &[&str]) -> Vec<Vec<char>> {
     let last = *input.last().unwrap();
 
     let count = last.chars().skip(1).step_by(4).count();
@@ -51,7 +51,7 @@ pub fn part_two(input: &str) -> Option<String> {
     for line in lines {
         let [num, from, to] = parse_with_regex::<usize, 3>(&RE, line);
 
-        let (source, target) = vec_mut_ref(&mut stacks, from - 1, to - 1);
+        let (source, target) = disjoint_mut_refs(&mut stacks, from - 1, to - 1);
 
         let source_len = source.len();
         for elem in source.drain(source_len - num..) {

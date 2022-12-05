@@ -31,7 +31,7 @@ where
     arr
 }
 
-pub fn vec_mut_ref<T>(v: &mut Vec<T>, a0: usize, a1: usize) -> (&mut T, &mut T) {
+pub fn disjoint_mut_refs<T>(v: &mut [T], a0: usize, a1: usize) -> (&mut T, &mut T) {
     assert_ne!(a0, a1, "Vector indices cannot be equal at runtime");
     // SAFETY: this is safe because we know a0 != a1
     unsafe { (&mut *(&mut v[a0] as *mut _), &mut *(&mut v[a1] as *mut _)) }

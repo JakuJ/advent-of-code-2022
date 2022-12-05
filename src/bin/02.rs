@@ -27,7 +27,7 @@ pub fn part_one(input: &str) -> Option<u32> {
     Some(
         input
             .lines()
-            .map(|line| play(line.chars().nth(0).unwrap(), line.chars().nth(2).unwrap()))
+            .map(|line| play(line.chars().next().unwrap(), line.chars().nth(2).unwrap()))
             .sum(),
     )
 }
@@ -56,7 +56,7 @@ pub fn part_two(input: &str) -> Option<u32> {
     Some(
         input
             .lines()
-            .map(|line| strategy(line.chars().nth(0).unwrap(), line.chars().nth(2).unwrap()))
+            .map(|line| strategy(line.chars().next().unwrap(), line.chars().nth(2).unwrap()))
             .sum(),
     )
 }
