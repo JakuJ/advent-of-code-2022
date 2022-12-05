@@ -1,3 +1,4 @@
+#![feature(test)]
 #![feature(iter_array_chunks)]
 
 fn priority(x: u8) -> u8 {
@@ -47,6 +48,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    extern crate test;
 
     #[test]
     fn test_priority() {
@@ -73,5 +75,17 @@ mod tests {
         let input = advent_of_code::read_file("inputs", 3);
         assert_eq!(part_one(&input), Some(7908));
         assert_eq!(part_two(&input), Some(2838));
+    }
+
+    #[bench]
+    fn bench_part_one(b: &mut test::Bencher) {
+        let input = &advent_of_code::read_file("inputs", 3);
+        b.iter(|| part_one(input));
+    }
+
+    #[bench]
+    fn bench_part_two(b: &mut test::Bencher) {
+        let input = &advent_of_code::read_file("inputs", 3);
+        b.iter(|| part_two(input));
     }
 }

@@ -1,3 +1,4 @@
+#![feature(test)]
 #![feature(iter_collect_into)]
 
 use advent_of_code::helpers::parse_with_regex;
@@ -42,6 +43,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    extern crate test;
 
     #[test]
     fn test_part_one() {
@@ -60,5 +62,17 @@ mod tests {
         let input = advent_of_code::read_file("inputs", 4);
         assert_eq!(part_one(&input), Some(524));
         assert_eq!(part_two(&input), Some(798));
+    }
+
+    #[bench]
+    fn bench_part_one(b: &mut test::Bencher) {
+        let input = &advent_of_code::read_file("inputs", 4);
+        b.iter(|| part_one(input));
+    }
+
+    #[bench]
+    fn bench_part_two(b: &mut test::Bencher) {
+        let input = &advent_of_code::read_file("inputs", 4);
+        b.iter(|| part_two(input));
     }
 }

@@ -1,3 +1,5 @@
+#![feature(test)]
+
 fn play(p1: char, p2: char) -> u32 {
     // shape score
     let score = match p2 {
@@ -70,6 +72,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    extern crate test;
 
     #[test]
     fn test_part_one() {
@@ -88,5 +91,17 @@ mod tests {
         let input = advent_of_code::read_file("inputs", 2);
         assert_eq!(part_one(&input), Some(11841));
         assert_eq!(part_two(&input), Some(13022));
+    }
+
+    #[bench]
+    fn bench_part_one(b: &mut test::Bencher) {
+        let input = &advent_of_code::read_file("inputs", 2);
+        b.iter(|| part_one(input));
+    }
+
+    #[bench]
+    fn bench_part_two(b: &mut test::Bencher) {
+        let input = &advent_of_code::read_file("inputs", 2);
+        b.iter(|| part_two(input));
     }
 }

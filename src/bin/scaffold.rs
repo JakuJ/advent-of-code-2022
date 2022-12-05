@@ -8,7 +8,9 @@ use std::{
     process,
 };
 
-const MODULE_TEMPLATE: &str = r###"pub fn part_one(input: &str) -> Option<u32> {
+const MODULE_TEMPLATE: &str = r###"#![feature(test)]
+
+pub fn part_one(input: &str) -> Option<u32> {
     None
 }
 
@@ -25,6 +27,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    extern crate test;
 
     #[test]
     fn test_part_one() {
@@ -43,6 +46,18 @@ mod tests {
         let input = advent_of_code::read_file("inputs", DAY);
         assert_eq!(part_one(&input), None);
         assert_eq!(part_two(&input), None);
+    }
+
+    #[bench]
+    fn bench_part_one(b: &mut test::Bencher) {
+        let input = &advent_of_code::read_file("inputs", DAY);
+        b.iter(|| part_one(input));
+    }
+
+    #[bench]
+    fn bench_part_two(b: &mut test::Bencher) {
+        let input = &advent_of_code::read_file("inputs", DAY);
+        b.iter(|| part_two(input));
     }
 }
 "###;

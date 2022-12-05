@@ -1,3 +1,5 @@
+#![feature(test)]
+
 use advent_of_code::helpers::{disjoint_mut_refs, parse_with_regex};
 use lazy_static::lazy_static;
 use regex::Regex;
@@ -8,10 +10,9 @@ lazy_static! {
 
 fn parse_crates(input: &[&str]) -> Vec<Vec<char>> {
     let last = *input.last().unwrap();
+    let count = last.len() / 4 + 1;
 
-    let count = last.chars().skip(1).step_by(4).count();
-
-    let mut stacks = vec![Vec::<char>::new(); count];
+    let mut stacks = vec![Vec::new(); count];
 
     for line in input.iter().rev().skip(1) {
         for (i, c) in line.chars().skip(1).step_by(4).enumerate() {
@@ -33,9 +34,10 @@ pub fn part_one(input: &str) -> Option<String> {
     for line in lines {
         let [num, from, to] = parse_with_regex::<usize, 3>(&RE, line);
 
-        for _ in 0..num {
-            let val = stacks[from - 1].pop().unwrap();
-            stacks[to - 1].push(val);
+        let (source, target) = disjoint_mut_refs(&mut stacks, from - 1, to - 1);
+
+        for elem in source.drain(source.len() - num..).rev() {
+            target.push(elem);
         }
     }
 
@@ -53,8 +55,7 @@ pub fn part_two(input: &str) -> Option<String> {
 
         let (source, target) = disjoint_mut_refs(&mut stacks, from - 1, to - 1);
 
-        let source_len = source.len();
-        for elem in source.drain(source_len - num..) {
+        for elem in source.drain(source.len() - num..) {
             target.push(elem);
         }
     }
@@ -72,6 +73,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    extern crate test;
 
     #[test]
     fn test_part_one() {
@@ -90,5 +92,17 @@ mod tests {
         let input = advent_of_code::read_file("inputs", 5);
         assert_eq!(part_one(&input), Some("CNSZFDVLJ".to_string()));
         assert_eq!(part_two(&input), Some("QNDWLMGNS".to_string()));
+    }
+
+    #[bench]
+    fn bench_part_one(b: &mut test::Bencher) {
+        let input = &advent_of_code::read_file("inputs", 5);
+        b.iter(|| part_one(input));
+    }
+
+    #[bench]
+    fn bench_part_two(b: &mut test::Bencher) {
+        let input = &advent_of_code::read_file("inputs", 5);
+        b.iter(|| part_two(input));
     }
 }

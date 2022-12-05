@@ -1,3 +1,4 @@
+#![feature(test)]
 #![feature(binary_heap_into_iter_sorted)]
 
 pub fn part_one(input: &str) -> Option<u32> {
@@ -44,6 +45,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    extern crate test;
 
     #[test]
     fn test_part_one() {
@@ -62,5 +64,17 @@ mod tests {
         let input = advent_of_code::read_file("inputs", 1);
         assert_eq!(part_one(&input), Some(69693));
         assert_eq!(part_two(&input), Some(200945));
+    }
+
+    #[bench]
+    fn bench_part_one(b: &mut test::Bencher) {
+        let input = &advent_of_code::read_file("inputs", 1);
+        b.iter(|| part_one(input));
+    }
+
+    #[bench]
+    fn bench_part_two(b: &mut test::Bencher) {
+        let input = &advent_of_code::read_file("inputs", 1);
+        b.iter(|| part_two(input));
     }
 }
