@@ -8,30 +8,28 @@ where
     let mut acc = init;
 
     for line in input.lines() {
-        if line.starts_with("$") {
+        if line.starts_with('$') {
             // parse command
             let (_, line) = line.split_at(2);
-            if line.len() > 2 {
-                if line == "cd .." {
-                    // add to current directory
-                    let size = stack.pop().unwrap();
-                    // update the accumulator
-                    acc = update(acc, size);
-                    // add to the outer directory
-                    *stack.last_mut().unwrap() += size;
-                } else {
-                    // start counting in a new directory
-                    stack.push(0);
-                }
+            if line == "cd .." {
+                // add to current directory
+                let size = stack.pop().unwrap();
+                // update the accumulator
+                acc = update(acc, size);
+                // add to the outer directory
+                *stack.last_mut().unwrap() += size;
+            } else if line.len() > 2 {
+                // start counting in a new directory
+                stack.push(0);
             }
-        } else if !line.starts_with("d") {
+        } else if !line.starts_with('d') {
             // count file size towards current directory
-            let (digits, _) = line.split_once(" ").unwrap();
+            let (digits, _) = line.split_once(' ').unwrap();
             *stack.last_mut().unwrap() += digits.parse::<u32>().unwrap();
         }
     }
 
-    // remember to process the root directory
+    // remember to process remaining directories
     while let Some(size) = stack.pop() {
         acc = update(acc, size);
 
@@ -59,7 +57,7 @@ pub fn part_two(input: &str) -> Option<u32> {
     let space_left = 70000000 - root_size;
 
     Some(process(input, root_size, |acc, size| {
-        if space_left + size >= 30000000 && size < acc {
+        if size < acc && space_left + size >= 30000000 {
             size
         } else {
             acc
