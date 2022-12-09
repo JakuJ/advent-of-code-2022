@@ -4,6 +4,8 @@
 
 Solutions for [Advent of Code](https://adventofcode.com/) in [Rust](https://www.rust-lang.org/).
 
+All solutions run in **under 1ms** in release mode (on my machine, your experience may vary).
+
 | Day | Part 1 | Part 2 |
 | :---: | :---: | :---: |
 | [Day 1](https://adventofcode.com/2021/day/1) | ⭐ | ⭐ |
@@ -14,6 +16,7 @@ Solutions for [Advent of Code](https://adventofcode.com/) in [Rust](https://www.
 | [Day 6](https://adventofcode.com/2021/day/6) | ⭐ | ⭐ |
 | [Day 7](https://adventofcode.com/2021/day/7) | ⭐ | ⭐ |
 | [Day 8](https://adventofcode.com/2021/day/8) | ⭐ | ⭐ |
+| [Day 9](https://adventofcode.com/2021/day/9) | ⭐ | ⭐ |
 
 ---
 
