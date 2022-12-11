@@ -1,7 +1,5 @@
 #![feature(test)]
 
-use std::collections::VecDeque;
-
 use advent_of_code::helpers::disjoint_mut_refs_3;
 use lazy_static::lazy_static;
 use regex::Regex;
@@ -18,35 +16,42 @@ lazy_static! {
     .unwrap();
 }
 
-#[derive(Debug)]
-enum Operand {
-    Old,
-    Number(u64),
-}
-
-#[derive(Debug)]
 struct Monkey {
-    items: VecDeque<u64>,
+    items: Vec<u64>,
     op: char,
-    operand: Operand,
+    operand: Option<u64>,
     divisor: u64,
     true_monkey: usize,
     false_monkey: usize,
 }
 
+fn unchecked_push_vec<T>(vec: &mut Vec<T>, value: T) {
+    unsafe {
+        vec.as_mut_ptr().add(vec.len()).write(value);
+        vec.set_len(vec.len() + 1);
+    }
+}
+
 fn parse_input(input: &str) -> Vec<Monkey> {
     let mut monkeys = Vec::new();
+    let mut capacity = 0;
+
     for cap in RE.captures_iter(input) {
-        let items = cap[1].split(", ").map(|s| s.parse().unwrap()).collect();
+        let items: Vec<u64> = cap[1].split(", ").map(|s| s.parse().unwrap()).collect();
+        capacity += items.len();
+
         let op = cap[3].chars().next().unwrap();
+
         let operand = if let Ok(n) = cap[4].parse() {
-            Operand::Number(n)
+            Some(n)
         } else {
-            Operand::Old
+            None
         };
+
         let divisor = cap[5].parse().unwrap();
         let true_monkey = cap[6].parse().unwrap();
         let false_monkey = cap[7].parse().unwrap();
+
         monkeys.push(Monkey {
             items,
             op,
@@ -56,6 +61,12 @@ fn parse_input(input: &str) -> Vec<Monkey> {
             false_monkey,
         });
     }
+
+    // ensures that all monkeys have enough capacity to hold all items
+    for monkey in &mut monkeys {
+        monkey.items.reserve(capacity);
+    }
+
     monkeys
 }
 
@@ -70,11 +81,12 @@ pub fn part_one(input: &str) -> Option<usize> {
 
             inspections[i] += monkey.items.len();
 
-            while let Some(worry) = monkey.items.pop_front() {
+            for &worry in monkey.items.iter() {
                 let operand = match monkey.operand {
-                    Operand::Old => worry,
-                    Operand::Number(n) => n,
+                    None => worry,
+                    Some(n) => n,
                 };
+
                 let new_worry = match monkey.op {
                     '+' => worry + operand,
                     '-' => worry - operand,
@@ -86,11 +98,13 @@ pub fn part_one(input: &str) -> Option<usize> {
                 let new_worry = new_worry / 3;
 
                 if new_worry % monkey.divisor == 0 {
-                    true_monkey.items.push_back(new_worry);
+                    true_monkey.items.push(new_worry);
                 } else {
-                    false_monkey.items.push_back(new_worry);
+                    false_monkey.items.push(new_worry);
                 }
             }
+
+            monkey.items.clear();
         }
     }
 
@@ -98,6 +112,11 @@ pub fn part_one(input: &str) -> Option<usize> {
     Some(inspections[0] * inspections[1])
 }
 
+// 1,273,514 ns/iter (+/- 36,504) -- push_within_capacity
+// 1,171,410 ns/iter (+/- 39,868) -- unchecked_push_vec
+// 1,066,482 ns/iter (+/- 44,500) -- disjoint_mut_refs_3 without assertions
+// 1,054,114 ns/iter (+/- 68,945) -- Option instead of Operand
+// 1,042,988 ns/iter (+/- 70,647) -- non-constant items capacity
 pub fn part_two(input: &str) -> Option<usize> {
     let mut monkeys = parse_input(input);
     let mut inspections = vec![0_usize; monkeys.len()];
@@ -111,25 +130,28 @@ pub fn part_two(input: &str) -> Option<usize> {
 
             inspections[i] += monkey.items.len();
 
-            while let Some(worry) = monkey.items.pop_front() {
+            for &worry in monkey.items.iter() {
                 let operand = match monkey.operand {
-                    Operand::Old => worry,
-                    Operand::Number(n) => n,
+                    None => worry,
+                    Some(n) => n,
                 };
+
                 let new_worry = match monkey.op {
-                    '+' => (worry + operand) % max_mod,
-                    '-' => (worry - operand) % max_mod,
-                    '*' => (worry * operand) % max_mod,
-                    '/' => (worry / operand) % max_mod,
+                    '+' => worry + operand,
+                    '-' => worry - operand,
+                    '*' => worry * operand % max_mod,
+                    '/' => worry / operand,
                     _ => unreachable!("invalid operator"),
                 };
 
                 if new_worry % monkey.divisor == 0 {
-                    true_monkey.items.push_back(new_worry);
+                    unchecked_push_vec(&mut true_monkey.items, new_worry);
                 } else {
-                    false_monkey.items.push_back(new_worry);
+                    unchecked_push_vec(&mut false_monkey.items, new_worry);
                 }
             }
+
+            monkey.items.clear();
         }
     }
 
@@ -140,8 +162,8 @@ pub fn part_two(input: &str) -> Option<usize> {
 fn main() {
     let input = &advent_of_code::read_file("inputs", 11);
     advent_of_code::solve!(1, part_one, input);
-    advent_of_code::solve!(2, part_two, input);
-}
+        advent_of_code::solve!(2, part_two, input);
+    }
 
 #[cfg(test)]
 mod tests {

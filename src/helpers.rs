@@ -30,22 +30,22 @@ where
     arr
 }
 
+/// # Safety
+/// This function only works if a0 != a1.
+#[inline]
 pub fn disjoint_mut_refs<T>(v: &mut [T], a0: usize, a1: usize) -> (&mut T, &mut T) {
-    assert_ne!(a0, a1, "Vector indices cannot be equal at runtime");
-    // SAFETY: this is safe because we know a0 != a1
     unsafe { (&mut *(&mut v[a0] as *mut _), &mut *(&mut v[a1] as *mut _)) }
 }
 
+/// # Safety
+/// This function only works if a0 != a1 != a2.
+#[inline]
 pub fn disjoint_mut_refs_3<T>(
     v: &mut [T],
     a0: usize,
     a1: usize,
     a2: usize,
 ) -> (&mut T, &mut T, &mut T) {
-    assert_ne!(a0, a1, "Vector indices cannot be equal at runtime");
-    assert_ne!(a1, a2, "Vector indices cannot be equal at runtime");
-    assert_ne!(a0, a2, "Vector indices cannot be equal at runtime");
-    // SAFETY: this is safe because we know a0 != a1 != a2
     unsafe {
         (
             &mut *(&mut v[a0] as *mut _),
