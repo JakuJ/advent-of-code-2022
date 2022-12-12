@@ -18,3 +18,4 @@ debug = false
 pico-args = "0.5.0"
 regex = "1.7.0"
 lazy_static = "1.4.0"
+bucket_queue = "2.0.0"

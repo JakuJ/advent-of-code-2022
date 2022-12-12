@@ -6,6 +6,7 @@ version = 3
 name = "advent_of_code"
 version = "0.8.0"
 dependencies = [
+ "bucket_queue",
  "lazy_static",
  "pico-args",
  "regex",
@@ -19,6 +20,12 @@ checksum = "cc936419f96fa211c1b9166887b38e5e40b19958e5b895be7c1f93adec7071ac"
 dependencies = [
  "memchr",
 ]
+
+[[package]]
+name = "bucket_queue"
+version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "899ef58ed41750685cdd9900e2a49e66477835f639ca6798650a6e13e62b5463"
 
 [[package]]
 name = "lazy_static"
