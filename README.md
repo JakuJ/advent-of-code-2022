@@ -9,20 +9,20 @@ Solutions marked ✨ take longer than that.
 
 |                      Day                       | Part 1  |  Part 2  |
 | :--------------------------------------------: | :-----: | :------: |
-|  [Day 1](https://adventofcode.com/2021/day/1)  |    ⭐    |    ⭐     |
-|  [Day 2](https://adventofcode.com/2021/day/2)  |    ⭐    |    ⭐     |
-|  [Day 3](https://adventofcode.com/2021/day/3)  |    ⭐    |    ⭐     |
-|  [Day 4](https://adventofcode.com/2021/day/4)  |    ⭐    |    ⭐     |
-|  [Day 5](https://adventofcode.com/2021/day/5)  |    ⭐    |    ⭐     |
-|  [Day 6](https://adventofcode.com/2021/day/6)  |    ⭐    |    ⭐     |
-|  [Day 7](https://adventofcode.com/2021/day/7)  |    ⭐    |    ⭐     |
-|  [Day 8](https://adventofcode.com/2021/day/8)  |    ⭐    |    ⭐     |
-|  [Day 9](https://adventofcode.com/2021/day/9)  |    ⭐    |    ⭐     |
-| [Day 10](https://adventofcode.com/2021/day/10) |    ⭐    |    ⭐     |
-| [Day 11](https://adventofcode.com/2021/day/11) |    ⭐    | ✨ 1.1 ms |
-| [Day 12](https://adventofcode.com/2021/day/12) | ✨ 24 ms | ✨ 22 ms  |
-| [Day 13](https://adventofcode.com/2021/day/13) |    ⭐    |    ⭐     |
-| [Day 14](https://adventofcode.com/2021/day/14) |    ⭐    | ✨ 2.9 ms |
+|  [Day 1](https://adventofcode.com/2022/day/1)  |    ⭐    |    ⭐     |
+|  [Day 2](https://adventofcode.com/2022/day/2)  |    ⭐    |    ⭐     |
+|  [Day 3](https://adventofcode.com/2022/day/3)  |    ⭐    |    ⭐     |
+|  [Day 4](https://adventofcode.com/2022/day/4)  |    ⭐    |    ⭐     |
+|  [Day 5](https://adventofcode.com/2022/day/5)  |    ⭐    |    ⭐     |
+|  [Day 6](https://adventofcode.com/2022/day/6)  |    ⭐    |    ⭐     |
+|  [Day 7](https://adventofcode.com/2022/day/7)  |    ⭐    |    ⭐     |
+|  [Day 8](https://adventofcode.com/2022/day/8)  |    ⭐    |    ⭐     |
+|  [Day 9](https://adventofcode.com/2022/day/9)  |    ⭐    |    ⭐     |
+| [Day 10](https://adventofcode.com/2022/day/10) |    ⭐    |    ⭐     |
+| [Day 11](https://adventofcode.com/2022/day/11) |    ⭐    | ✨ 1.1 ms |
+| [Day 12](https://adventofcode.com/2022/day/12) | ✨ 24 ms | ✨ 22 ms  |
+| [Day 13](https://adventofcode.com/2022/day/13) |    ⭐    |    ⭐     |
+| [Day 14](https://adventofcode.com/2022/day/14) |    ⭐    | ✨ 2.9 ms |
 
 ---
 
@@ -60,7 +60,7 @@ cargo download <day>
 # output:
 # Downloading input with aoc-cli...
 # Loaded session cookie from "/home/felix/.adventofcode.session".
-# Downloading input for day 1, 2021...
+# Downloading input for day 1, 2022...
 # Saving puzzle input to "/tmp/tmp.MBdcAdL9Iw/input"...
 # Done!
 # ---
@@ -170,7 +170,7 @@ Go to the _Secrets_ tab in your repository settings and create the following sec
 
 -   `AOC_ENABLED`: This variable controls whether the workflow is enabled. Set it to `true` to enable the progress tracker.
 -   `AOC_USER_ID`: Go to [this page](https://adventofcode.com/settings) and copy your user id. It's the number behind the `#` symbol in the first name option. Example: `3031`
--   `AOC_YEAR`: the year you want to track. Example: `2021`
+-   `AOC_YEAR`: the year you want to track. Example: `2022`
 -   `AOC_SESSION`: an active session[^2] for the advent of code website. To get this, press F12 anywhere on the Advent of Code website to open your browser developer tools. Look in your Cookies under the Application or Storage tab, and copy out the `session` cookie.
 
 ✨ You can now run this action manually via the _Run workflow_ button on the workflow page. If you want the workflow to run automatically, uncomment the `schedule` section in the `readme-stars.yml` workflow file or add a `push` trigger.
