@@ -22,7 +22,7 @@ Solutions marked ✨ take longer than that.
 | [Day 11](https://adventofcode.com/2021/day/11) |    ⭐    | ✨ 1.1 ms |
 | [Day 12](https://adventofcode.com/2021/day/12) | ✨ 24 ms | ✨ 22 ms  |
 | [Day 13](https://adventofcode.com/2021/day/13) |    ⭐    |    ⭐     |
-| [Day 14](https://adventofcode.com/2021/day/14) |    ⭐    |  ✨ 3 ms  |
+| [Day 14](https://adventofcode.com/2021/day/14) |    ⭐    | ✨ 2.9 ms |
 
 ---
 

@@ -1,10 +1,10 @@
 #![feature(test)]
 
-use std::cmp::{max, min};
-
 type Point = (usize, usize);
 type Path = Vec<Point>;
 type Grid = Vec<Vec<char>>;
+
+const SOURCE_X: usize = 500;
 
 fn parse_input(input: &str) -> Vec<Vec<Point>> {
     input
@@ -34,34 +34,29 @@ fn prepare_grid(paths: Vec<Path>, include_floor: bool) -> (Grid, usize) {
         height += 2;
     }
 
-    let (leftmost, rightmost) = paths
-        .iter()
-        .flat_map(|x| x.iter().map(|x| x.0))
-        .fold((usize::MAX, usize::MIN), |acc, x| {
-            (min(acc.0, x), max(acc.1, x))
-        });
-
     let cone_width = 2 * height + 1;
 
-    let leftmost = min(leftmost, 500 - cone_width);
-    let rightmost = max(rightmost, 500 + cone_width);
+    // we'll omit the bounds checks when drawing the paths
+    let leftmost = SOURCE_X - cone_width;
+    let rightmost = SOURCE_X + cone_width;
 
     let width = rightmost - leftmost + 1;
     let x_offset = leftmost;
 
-    // create grid
+    // create the grid
     let mut grid = vec![vec!['.'; width]; height];
 
     for path in paths {
         for (&(sx, sy), &(ex, ey)) in path.iter().zip(path.iter().skip(1)) {
+            let (sx, ex) = (sx - x_offset, ex - x_offset);
             if sx == ex {
                 let (sy, ey) = if sy < ey { (sy, ey) } else { (ey, sy) };
                 for y in sy..=ey {
-                    grid[y][sx - x_offset] = '#';
+                    grid[y][sx] = '#';
                 }
             } else {
                 let (sx, ex) = if sx < ex { (sx, ex) } else { (ex, sx) };
-                grid[sy][sx - x_offset..=ex - x_offset].fill('#');
+                grid[sy][sx..=ex].fill('#');
             }
         }
     }
@@ -70,16 +65,11 @@ fn prepare_grid(paths: Vec<Path>, include_floor: bool) -> (Grid, usize) {
         grid[height - 1].fill('#');
     }
 
-    println!("Grid size: {} x {}", width, height);
-
-    (grid, x_offset)
+    (grid, SOURCE_X - x_offset)
 }
 
-fn simulate_falling_sand(grid: &mut Grid, x_offset: usize) -> u32 {
+fn simulate_falling_sand(grid: &mut Grid, x_origin: usize) -> u32 {
     let height = grid.len();
-    let width = grid[0].len();
-
-    let x_origin = 500 - x_offset;
     let mut settled = 0;
 
     'sim: loop {
@@ -89,23 +79,19 @@ fn simulate_falling_sand(grid: &mut Grid, x_offset: usize) -> u32 {
             if current.1 + 1 == height {
                 break 'sim;
             }
+
+            // pointer to down-left, down, down-right
             // move down if possible
-            else if current.1 + 1 < height && grid[current.1 + 1][current.0] == '.' {
+            if grid[current.1 + 1][current.0] == '.' {
                 current.1 += 1;
             }
             // otherwise move diagonally down and left
-            else if current.0 > 0
-                && current.1 + 1 < height
-                && grid[current.1 + 1][current.0 - 1] == '.'
-            {
+            else if grid[current.1 + 1][current.0 - 1] == '.' {
                 current.0 -= 1;
                 current.1 += 1;
             }
             // otherwise move diagonally down and right
-            else if current.0 + 1 < width
-                && current.1 + 1 < height
-                && grid[current.1 + 1][current.0 + 1] == '.'
-            {
+            else if grid[current.1 + 1][current.0 + 1] == '.' {
                 current.0 += 1;
                 current.1 += 1;
             }
