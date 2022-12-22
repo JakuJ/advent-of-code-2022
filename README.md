@@ -29,6 +29,7 @@ Solutions marked ✨ take longer than that.
 | [Day 18](https://adventofcode.com/2022/day/18) |    ⭐    | ✨ 1.9 ms |
 | [Day 19](https://adventofcode.com/2022/day/19) |         |          |
 | [Day 20](https://adventofcode.com/2022/day/20) | ✨ 40 ms | ✨ 645 ms |
+| [Day 21](https://adventofcode.com/2022/day/21) |    ⭐    | ✨ 25 ms  |
 
 ---
 
